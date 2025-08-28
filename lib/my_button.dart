@@ -7,6 +7,6 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(onPressed: onPressed, child: Text(text));
+    return ElevatedButton(onPressed: onPressed, child: Text(text));
   }
 }

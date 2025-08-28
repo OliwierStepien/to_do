@@ -65,16 +65,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.yellow[200],
       appBar: AppBar(
         title: const Text('To-Do List'),
-        backgroundColor: Colors.yellow,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          createNewTask();
-        },
-        child: const Icon(Icons.add),
+        centerTitle: true,
+        actions: [
+          IconButton(icon: const Icon(Icons.light_mode), onPressed: () {}),
+        ],
       ),
       body: ListView.builder(
         itemCount: db.toDoList.length,
@@ -86,6 +82,12 @@ class _HomePageState extends State<HomePage> {
             deleteFunction: (context) => deleteTask(index),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          createNewTask();
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
