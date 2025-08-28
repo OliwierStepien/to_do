@@ -17,7 +17,6 @@ abstract final class AppTheme {
       alignedDropdown: true,
       navigationRailUseIndicator: true,
       appBarBackgroundSchemeColor: SchemeColor.primary,
-      blendOnLevel: 10,
       defaultRadius: 12,
     ),
     visualDensity: FlexColorScheme.comfortablePlatformDensity,
@@ -46,4 +45,9 @@ abstract final class AppTheme {
     cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
     useMaterial3: true,
   );
+
+  // 🔹 Dodana metoda pomocnicza
+  static ThemeData getTheme(bool isDark) {
+    return isDark ? dark : light;
+  }
 }
