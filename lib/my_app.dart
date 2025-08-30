@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do/core/configs/theme/app_theme.dart';
-import 'package:to_do/core/get_it/get_it.dart';
+import 'package:to_do/core/service_locator/service_locator.dart';
 import 'package:to_do/domain/theme/entity/theme_entity.dart';
 import 'package:to_do/home_page.dart';
-import 'package:to_do/presentation/bloc/theme_bloc.dart';
-import 'package:to_do/presentation/bloc/theme_events.dart';
+import 'package:to_do/presentation/bloc/theme_cubit.dart';
 
 class MyAppWrapper extends StatelessWidget {
   const MyAppWrapper({super.key});
@@ -14,8 +13,8 @@ class MyAppWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ThemeBloc>(
-          create: (context) => getIt<ThemeBloc>()..add(GetThemeEvent()),
+        BlocProvider<ThemeCubit>(
+          create: (context) => sl<ThemeCubit>()..getTheme(),
         ),
       ],
       child: const MyApp(),
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeState = context.watch<ThemeBloc>().state;
+    final themeState = context.watch<ThemeCubit>().state;
     final isDark = themeState.themeEntity?.themeType == ThemeType.dark;
 
     return MaterialApp(
