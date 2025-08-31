@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do/domain/theme/entity/theme_entity.dart';
 import 'package:to_do/domain/theme/usecase/get_theme_usecase.dart';
 import 'package:to_do/domain/theme/usecase/save_theme_usecase.dart';
-import 'package:to_do/presentation/bloc/theme_state.dart';
+import 'package:to_do/presentation/theme/bloc/theme_state.dart';
 
 /// Cubit obsługujący stan motywu
 class ThemeCubit extends Cubit<ThemeState> {

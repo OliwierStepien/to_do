@@ -4,7 +4,7 @@ import 'package:to_do/core/configs/theme/app_theme.dart';
 import 'package:to_do/core/service_locator/service_locator.dart';
 import 'package:to_do/domain/theme/entity/theme_entity.dart';
 import 'package:to_do/home_page.dart';
-import 'package:to_do/presentation/bloc/theme_cubit.dart';
+import 'package:to_do/presentation/theme/bloc/theme_cubit.dart';
 
 class MyAppWrapper extends StatelessWidget {
   const MyAppWrapper({super.key});

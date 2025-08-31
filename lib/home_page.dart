@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do/dialog_box.dart';
 import 'package:to_do/domain/theme/entity/theme_entity.dart';
-import 'package:to_do/presentation/bloc/theme_cubit.dart';
-import 'package:to_do/presentation/bloc/theme_state.dart';
+import 'package:to_do/presentation/theme/bloc/theme_cubit.dart';
+import 'package:to_do/presentation/theme/bloc/theme_state.dart';
 import 'package:to_do/todo_database.dart';
 import 'package:to_do/todo_tile.dart';
 

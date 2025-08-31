@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:to_do/data/datasource/theme_local_datasource.dart';
-import 'package:to_do/data/repository_impl/theme_repository_impl.dart';
+import 'package:to_do/data/theme/datasource/theme_local_datasource.dart';
+import 'package:to_do/data/theme/repository_impl/theme_repository_impl.dart';
 import 'package:to_do/domain/theme/repository/theme_repository.dart';
 import 'package:to_do/domain/theme/usecase/get_theme_usecase.dart';
 import 'package:to_do/domain/theme/usecase/save_theme_usecase.dart';
-import 'package:to_do/presentation/bloc/theme_cubit.dart';
+import 'package:to_do/presentation/theme/bloc/theme_cubit.dart';
 
 final sl = GetIt.instance;
 
