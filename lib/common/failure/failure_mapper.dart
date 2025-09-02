@@ -1,4 +1,4 @@
-import 'package:to_do/common/failure.dart';
+import 'package:to_do/common/failure/failure.dart';
 
 String mapFailureToMessage(Failure failure) {
   switch (failure) {

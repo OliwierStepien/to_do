@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:to_do/domain/todo/entity/todo_entity.dart';
 
 class TodoTile extends StatelessWidget {
-  final String taskName;
-  final bool taskCompleted;
+  final TodoEntity todo;
   final ValueChanged<bool?>? onChanged;
   final Function(BuildContext)? deleteFunction;
 
   const TodoTile({
     super.key,
-    required this.taskName,
-    required this.taskCompleted,
+    required this.todo,
     required this.onChanged,
     required this.deleteFunction,
   });
@@ -30,37 +29,29 @@ class TodoTile extends StatelessWidget {
               icon: Icons.delete,
               backgroundColor: theme.colorScheme.errorContainer,
               foregroundColor: theme.colorScheme.onErrorContainer,
-              borderRadius: BorderRadius.circular(
-                // dopasuj do defaultRadius z subThemesData
-                12,
-              ),
+              borderRadius: BorderRadius.circular(12),
             ),
           ],
         ),
         child: Card(
           clipBehavior: Clip.antiAlias,
-          elevation: 0, // pozwól M3 + FCS kontrolować podniesienie
+          elevation: 0,
           margin: EdgeInsets.zero,
           child: InkWell(
-            onTap: () => onChanged?.call(!taskCompleted),
+            onTap: () => onChanged?.call(!todo.isCompleted),
             child: Padding(
-              // Card dostaje tło z ColorScheme.surface (zblendowane przez FCS),
-              // a tekst/ikony z onSurface — kontrast będzie poprawny automatycznie.
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  Checkbox(
-                    value: taskCompleted,
-                    onChanged: onChanged,
-                    // Nie ustawiamy ręcznie kolorów — weźmie z motywu (primary/onPrimary itp.)
-                  ),
+                  Checkbox(value: todo.isCompleted, onChanged: onChanged),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      taskName,
+                      todo.title,
                       style: theme.textTheme.bodyLarge?.copyWith(
-                        decoration:
-                            taskCompleted ? TextDecoration.lineThrough : null,
+                        decoration: todo.isCompleted
+                            ? TextDecoration.lineThrough
+                            : null,
                       ),
                     ),
                   ),

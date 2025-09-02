@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:to_do/domain/theme/entity/theme_entity.dart';
 
 /// Enum określający status naszego stanu.
@@ -10,7 +11,7 @@ enum ThemeStatus { initial, loading, success, error }
 
 /// Klasa reprezentująca aktualny stan motywu.
 /// Zawiera wszystkie dane, które mogą być potrzebne w UI.
-class ThemeState {
+class ThemeState extends Equatable {
   /// Status operacji (initial/loading/success/error)
   final ThemeStatus status;
 
@@ -21,7 +22,7 @@ class ThemeState {
   final ThemeEntity? themeEntity;
 
   /// Prywatny konstruktor używany w fabrykach i copyWith
-  ThemeState._({
+  const ThemeState._({
     required this.status,
     this.errorMessage,
     this.themeEntity,
@@ -48,4 +49,6 @@ class ThemeState {
       themeEntity: theme ?? themeEntity,
     );
   }
+  @override
+  List<Object?> get props => [status, errorMessage, themeEntity];
 }

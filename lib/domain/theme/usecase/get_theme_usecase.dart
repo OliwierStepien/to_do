@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:to_do/common/failure.dart';
+import 'package:to_do/common/failure/failure.dart';
 import 'package:to_do/domain/theme/entity/theme_entity.dart';
 import 'package:to_do/domain/theme/repository/theme_repository.dart';
 
