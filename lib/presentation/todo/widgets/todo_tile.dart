@@ -49,9 +49,7 @@ class TodoTile extends StatelessWidget {
                     child: Text(
                       todo.title,
                       style: theme.textTheme.bodyLarge?.copyWith(
-                        decoration: todo.isCompleted
-                            ? TextDecoration.lineThrough
-                            : null,
+                        decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
                       ),
                     ),
                   ),

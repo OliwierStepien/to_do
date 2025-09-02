@@ -11,6 +11,8 @@ class TodoModel {
   final String title;
   @HiveField(2)
   final bool isCompleted;
+  @HiveField(3)
+  final int position;
 
-  TodoModel({required this.id, required this.title, required this.isCompleted});
+  TodoModel({required this.id, required this.title, required this.isCompleted, required this.position});
 }

@@ -7,6 +7,7 @@ class TodoMapper {
       id: model.id,
       title: model.title,
       isCompleted: model.isCompleted,
+      position: model.position,
     );
   }
 
@@ -15,6 +16,7 @@ class TodoMapper {
       id: entity.id,
       title: entity.title,
       isCompleted: entity.isCompleted,
+      position: entity.position,
     );
   }
 }
