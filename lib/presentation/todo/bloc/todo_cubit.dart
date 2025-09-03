@@ -61,48 +61,54 @@ class TodoCubit extends Cubit<TodoState> {
 
   /// Usuwa zadanie
   Future<void> deleteTodo(String id) async {
-    emit(state.copyWith(status: TodoStatus.loading));
+    final previousTodos = state.todos;
+    final updatedTodos = previousTodos.where((todo) => todo.id != id).toList();
+
+    emit(state.copyWith(status: TodoStatus.success, todos: updatedTodos));
 
     final result = await deleteTodoUsecase(id);
 
     result.fold(
       (failure) {
         final message = mapFailureToMessage(failure);
-        emit(state.copyWith(status: TodoStatus.error, errorMessage: message));
+        // Przy błędzie przywracamy poprzedni stan
+        emit(state.copyWith(
+          status: TodoStatus.error,
+          errorMessage: message,
+          todos: previousTodos,
+        ));
       },
-      (_) {
-        final updatedTodos = state.todos
-            .where((todo) => todo.id != id)
-            .toList();
-        emit(state.copyWith(status: TodoStatus.success, todos: updatedTodos));
-      },
+      (_) {},
     );
   }
 
   /// Aktualizuje istniejące zadanie
   Future<void> updateTodo(String id, TodoEntity updatedTodo) async {
-    emit(state.copyWith(status: TodoStatus.loading));
+    final previousTodos = state.todos;
+    final updatedTodos = previousTodos.map((todo) {
+      return todo.id == id ? updatedTodo : todo;
+    }).toList();
+
+    emit(state.copyWith(status: TodoStatus.success, todos: updatedTodos));
 
     final result = await updateTodoUsecase(id, updatedTodo);
 
     result.fold(
       (failure) {
         final message = mapFailureToMessage(failure);
-        emit(state.copyWith(status: TodoStatus.error, errorMessage: message));
+        // Przy błędzie przywracamy poprzedni stan
+        emit(state.copyWith(
+          status: TodoStatus.error,
+          errorMessage: message,
+          todos: previousTodos,
+        ));
       },
-      (_) {
-        final updatedTodos = state.todos.map((todo) {
-          return todo.id == id ? updatedTodo : todo;
-        }).toList();
-        emit(state.copyWith(status: TodoStatus.success, todos: updatedTodos));
-      },
+      (_) {},
     );
   }
 
   /// Zmiana kolejności Todo
   Future<void> reorderTodos(int oldIndex, int newIndex) async {
-    emit(state.copyWith(status: TodoStatus.loading));
-
     final result = await reorderTodosUsecase(
       todos: state.todos,
       oldIndex: oldIndex,

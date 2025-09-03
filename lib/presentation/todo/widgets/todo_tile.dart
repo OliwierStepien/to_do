@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:to_do/domain/todo/entity/todo_entity.dart';
+import 'package:to_do/presentation/todo/bloc/todo_cubit.dart';
+import 'package:to_do/presentation/todo/widgets/dialog_box.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TodoTile extends StatelessWidget {
   final TodoEntity todo;
@@ -52,6 +55,27 @@ class TodoTile extends StatelessWidget {
                         decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
                       ),
                     ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.edit, size: 20),
+                    onPressed: () {
+                      final controller = TextEditingController(text: todo.title);
+
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return DialogBox(
+                            controller: controller,
+                            onSave: () {
+                              final updatedTodo = todo.copyWith(title: controller.text);
+                              context.read<TodoCubit>().updateTodo(todo.id, updatedTodo);
+                              Navigator.pop(context);
+                            },
+                            onCancel: () => Navigator.pop(context),
+                          );
+                        },
+                      );
+                    },
                   ),
                 ],
               ),
