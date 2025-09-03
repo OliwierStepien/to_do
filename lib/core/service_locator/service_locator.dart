@@ -11,6 +11,7 @@ import 'package:to_do/domain/todo/repository/todo_repository.dart';
 import 'package:to_do/domain/todo/usecase/add_todo_usecase.dart';
 import 'package:to_do/domain/todo/usecase/delete_todo_usecase.dart';
 import 'package:to_do/domain/todo/usecase/get_todo_usecase.dart';
+import 'package:to_do/domain/todo/usecase/reorder_todo_usecase.dart';
 import 'package:to_do/domain/todo/usecase/update_todo_usecase.dart';
 import 'package:to_do/presentation/theme/bloc/theme_cubit.dart';
 import 'package:to_do/presentation/todo/bloc/todo_cubit.dart';
@@ -58,6 +59,7 @@ Future<void> initializeDependencies() async {
     sl.registerSingleton(AddTodoUsecase(repository: sl()));
     sl.registerSingleton(UpdateTodoUsecase(repository: sl()));
     sl.registerSingleton(DeleteTodoUsecase(repository: sl()));
+    sl.registerSingleton(ReorderTodosUsecase(repository: sl()));
 
 
   // BLOC
@@ -75,6 +77,7 @@ Future<void> initializeDependencies() async {
       addTodoUsecase: sl(),
       updateTodoUsecase: sl(),
       deleteTodoUsecase: sl(),
+      reorderTodosUsecase: sl(),
     ),
   );
 }

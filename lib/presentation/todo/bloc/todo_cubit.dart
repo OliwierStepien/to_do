@@ -4,6 +4,7 @@ import 'package:to_do/domain/todo/entity/todo_entity.dart';
 import 'package:to_do/domain/todo/usecase/add_todo_usecase.dart';
 import 'package:to_do/domain/todo/usecase/delete_todo_usecase.dart';
 import 'package:to_do/domain/todo/usecase/get_todo_usecase.dart';
+import 'package:to_do/domain/todo/usecase/reorder_todo_usecase.dart';
 import 'package:to_do/domain/todo/usecase/update_todo_usecase.dart';
 import 'todo_state.dart';
 
@@ -13,12 +14,14 @@ class TodoCubit extends Cubit<TodoState> {
   final AddTodoUsecase addTodoUsecase;
   final UpdateTodoUsecase updateTodoUsecase;
   final DeleteTodoUsecase deleteTodoUsecase;
+  final ReorderTodosUsecase reorderTodosUsecase;
 
   TodoCubit({
     required this.getTodoUsecase,
     required this.addTodoUsecase,
     required this.updateTodoUsecase,
     required this.deleteTodoUsecase,
+    required this.reorderTodosUsecase,
   }) : super(TodoState.initial());
 
   /// Pobiera wszystkie zadania
@@ -95,45 +98,25 @@ class TodoCubit extends Cubit<TodoState> {
       },
     );
   }
-/// Zmiana kolejności Todo
-void reorderTodos(int oldIndex, int newIndex) async {
-  if (oldIndex == newIndex) return;
 
-  print('Reorder: oldIndex=$oldIndex, newIndex=$newIndex');
+  /// Zmiana kolejności Todo
+  Future<void> reorderTodos(int oldIndex, int newIndex) async {
+    emit(state.copyWith(status: TodoStatus.loading));
 
-  final List<TodoEntity> updatedTodos = List.from(state.todos);
-  
-  // Standardowa logika dla ReorderableListView
-  if (oldIndex < newIndex) {
-    newIndex -= 1;
-  }
-  
-  final TodoEntity movedTodo = updatedTodos.removeAt(oldIndex);
-  
-  // Dodatkowe zabezpieczenie przed przekroczeniem zakresu
-  if (newIndex > updatedTodos.length) {
-    newIndex = updatedTodos.length;
-  }
-  if (newIndex < 0) {
-    newIndex = 0;
-  }
-  
-  updatedTodos.insert(newIndex, movedTodo);
-  
-  // Zaktualizuj pozycje
-  for (int i = 0; i < updatedTodos.length; i++) {
-    updatedTodos[i] = updatedTodos[i].copyWith(position: i);
-  }
+    final result = await reorderTodosUsecase(
+      todos: state.todos,
+      oldIndex: oldIndex,
+      newIndex: newIndex,
+    );
 
-  emit(state.copyWith(todos: updatedTodos));
-
-  // Zapisz zmiany
-  for (final todo in updatedTodos) {
-    final result = await updateTodoUsecase(todo.id, todo);
     result.fold(
-      (failure) => print('❌ Błąd: ${todo.title}'),
-      (_) => print('✅ Zapisano: ${todo.title} (pozycja: ${todo.position})'),
+      (failure) {
+        final message = mapFailureToMessage(failure);
+        emit(state.copyWith(status: TodoStatus.error, errorMessage: message));
+      },
+      (updatedTodos) {
+        emit(state.copyWith(status: TodoStatus.success, todos: updatedTodos));
+      },
     );
   }
-}
 }

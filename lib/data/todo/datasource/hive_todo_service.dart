@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:to_do/data/todo/model/todo_model.dart';
 
@@ -15,14 +16,14 @@ class HiveTodoDatasourceImpl implements HiveTodoDatasource {
   Future<List<TodoModel>> getTodo() async {
     final todos = _box.values.toList();
     todos.sort((a, b) => a.position.compareTo(b.position));
-    print('📦 [HiveTodoDatasource] getTodo -> total todos: ${todos.length}');
+    debugPrint('📦 [HiveTodoDatasource] getTodo -> total todos: ${todos.length}');
     return todos;
   }
 
   @override
   Future<void> addTodo(TodoModel todo) async {
     await _box.put(todo.id, todo);
-    print(
+    debugPrint(
       '➕ [HiveTodoDatasource] addTodo -> added id=${todo.id}, total todos=${_box.length}',
     );
   }
@@ -30,13 +31,13 @@ class HiveTodoDatasourceImpl implements HiveTodoDatasource {
   @override
   Future<void> updateTodo(String id, TodoModel todo) async {
     await _box.put(id, todo);
-    print('✏️ [HiveTodoDatasource] updateTodo -> updated id=$id');
+    debugPrint('✏️ [HiveTodoDatasource] updateTodo -> updated id=$id');
   }
 
   @override
   Future<void> deleteTodo(String id) async {
     await _box.delete(id);
-    print(
+    debugPrint(
       '🗑️ [HiveTodoDatasource] deleteTodo -> deleted id=$id, total todos=${_box.length}',
     );
   }
