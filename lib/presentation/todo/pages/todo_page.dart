@@ -18,7 +18,12 @@ class TodoPage extends StatelessWidget {
       builder: (context, themeState) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('To-Do List'),
+            title: BlocBuilder<TodoCubit, TodoState>(
+              builder: (context, todoState) {
+                final count = todoState.todos.length;
+                return Text('To-Do List ($count)');
+              },
+            ),
             centerTitle: true,
             actions: [
               IconButton(
@@ -101,19 +106,19 @@ class TodoPage extends StatelessWidget {
     );
   }
 
-void _saveNewTask(BuildContext context, TextEditingController controller) {
-  if (controller.text.trim().isEmpty) return;
+  void _saveNewTask(BuildContext context, TextEditingController controller) {
+    if (controller.text.trim().isEmpty) return;
 
-  final cubit = context.read<TodoCubit>();
+    final cubit = context.read<TodoCubit>();
 
-  final newTodo = TodoEntity(
-    id: DateTime.now().millisecondsSinceEpoch.toString(),
-    title: controller.text.trim(),
-    isCompleted: false,
-    position: cubit.state.todos.length, // nowa pozycja na końcu listy
-  );
+    final newTodo = TodoEntity(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      title: controller.text.trim(),
+      isCompleted: false,
+      position: cubit.state.todos.length, // nowa pozycja na końcu listy
+    );
 
-  cubit.addTodo(newTodo);
-  Navigator.of(context).pop();
-}
+    cubit.addTodo(newTodo);
+    Navigator.of(context).pop();
+  }
 }
