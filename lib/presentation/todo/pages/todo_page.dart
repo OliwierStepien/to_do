@@ -54,19 +54,25 @@ class TodoPage extends StatelessWidget {
 
               return ReorderableListView.builder(
                 itemCount: todoState.todos.length,
+                buildDefaultDragHandles: false, // 👈 własny uchwyt
                 onReorder: (oldIndex, newIndex) {
                   context.read<TodoCubit>().reorderTodos(oldIndex, newIndex);
                 },
                 itemBuilder: (context, index) {
                   final todo = todoState.todos[index];
-                  return ReorderableDragStartListener(
-                    key: ValueKey(todo.id),
-                    index: index,
-                    child: TodoTile(
-                      key: ValueKey(todo.id),
-                      todo: todo,
-                      onChanged: (_) => _checkBoxChanged(context, todo),
-                      deleteFunction: (_) => _deleteTask(context, todo.id),
+                  return TodoTile(
+                    key: ValueKey(todo.id), // 👈 klucz elementu listy
+                    todo: todo,
+                    onChanged: (_) => _checkBoxChanged(context, todo),
+                    deleteFunction: (_) => _deleteTask(context, todo.id),
+
+                    // 👇 Własny uchwyt przeciągania po prawej
+                    dragHandle: ReorderableDragStartListener(
+                      index: index,
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Icon(Icons.drag_handle),
+                      ),
                     ),
                   );
                 },
@@ -115,7 +121,7 @@ class TodoPage extends StatelessWidget {
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       title: controller.text.trim(),
       isCompleted: false,
-      position: cubit.state.todos.length, // nowa pozycja na końcu listy
+      position: cubit.state.todos.length,
     );
 
     cubit.addTodo(newTodo);

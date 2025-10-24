@@ -10,11 +10,15 @@ class TodoTile extends StatelessWidget {
   final ValueChanged<bool?>? onChanged;
   final Function(BuildContext)? deleteFunction;
 
+  /// 👇 Nowe: własny uchwyt przeciągania przekazywany z listy
+  final Widget? dragHandle;
+
   const TodoTile({
     super.key,
     required this.todo,
     required this.onChanged,
     required this.deleteFunction,
+    this.dragHandle,
   });
 
   @override
@@ -52,14 +56,18 @@ class TodoTile extends StatelessWidget {
                     child: Text(
                       todo.title,
                       style: theme.textTheme.bodyLarge?.copyWith(
-                        decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
+                        decoration: todo.isCompleted
+                            ? TextDecoration.lineThrough
+                            : null,
                       ),
                     ),
                   ),
+                  // ✏️ Edycja
                   IconButton(
                     icon: const Icon(Icons.edit, size: 20),
                     onPressed: () {
-                      final controller = TextEditingController(text: todo.title);
+                      final controller =
+                          TextEditingController(text: todo.title);
 
                       showDialog(
                         context: context,
@@ -67,8 +75,11 @@ class TodoTile extends StatelessWidget {
                           return DialogBox(
                             controller: controller,
                             onSave: () {
-                              final updatedTodo = todo.copyWith(title: controller.text);
-                              context.read<TodoCubit>().updateTodo(todo.id, updatedTodo);
+                              final updatedTodo =
+                                  todo.copyWith(title: controller.text);
+                              context
+                                  .read<TodoCubit>()
+                                  .updateTodo(todo.id, updatedTodo);
                               Navigator.pop(context);
                             },
                             onCancel: () => Navigator.pop(context),
@@ -77,6 +88,8 @@ class TodoTile extends StatelessWidget {
                       );
                     },
                   ),
+                  // ☰ Uchwyt przeciągania po prawej (jeśli przekazany)
+                  if (dragHandle != null) dragHandle!,
                 ],
               ),
             ),
